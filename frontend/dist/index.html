@@ -501,13 +501,15 @@
                 return () => clearTimeout(timer);
             }, [riskScore]);
 
-            const radius = 100;
-            const stroke = 16;
-            const normalizedRadius = radius - stroke * 2;
-            const circumference = normalizedRadius * 2 * Math.PI;
+            const outerRadius = 96;
+            const innerRadius = 80;
+            const strokeWidth = 10;
             
-            const strokeDashoffsetGDPR = circumference - (92 / 100) * circumference;
-            const strokeDashoffsetSOC2 = circumference - (78 / 100) * circumference;
+            const outerCircumference = outerRadius * 2 * Math.PI;
+            const innerCircumference = innerRadius * 2 * Math.PI;
+            
+            const strokeDashoffsetGDPR = outerCircumference - (92 / 100) * outerCircumference;
+            const strokeDashoffsetSOC2 = innerCircumference - (78 / 100) * innerCircumference;
 
             return (
                 <div className="p-8 space-y-8 animate-fade-in-up">
@@ -593,33 +595,38 @@
                             <div className="flex-1 flex items-center justify-around flex-wrap gap-6">
                                 <div className="relative">
                                     <svg className="w-64 h-64 -rotate-90">
-                                        <circle cx="128" cy="128" fill="transparent" r={normalizedRadius} stroke="#1b2023" strokeWidth={stroke}></circle>
+                                        {/* Outer Background Track */}
+                                        <circle cx="128" cy="128" fill="transparent" r={96} stroke="#171c1f" strokeWidth={10}></circle>
+                                        {/* Segment 1: Primary Cyan */}
                                         <circle
                                             cx="128"
                                             cy="128"
                                             fill="transparent"
-                                            r={normalizedRadius}
+                                            r={96}
                                             stroke="#a8e8ff"
-                                            strokeWidth={stroke}
-                                            strokeDasharray={circumference + ' ' + circumference}
+                                            strokeWidth={10}
+                                            strokeDasharray={outerCircumference + ' ' + outerCircumference}
                                             style={{ strokeDashoffset: strokeDashoffsetGDPR, transition: 'stroke-dashoffset 1s ease' }}
                                             strokeLinecap="round"
                                         ></circle>
+                                        {/* Inner Background Track */}
+                                        <circle cx="128" cy="128" fill="transparent" r={80} stroke="#171c1f" strokeWidth={10}></circle>
+                                        {/* Segment 2: Secondary Teal */}
                                         <circle
                                             cx="128"
                                             cy="128"
                                             fill="transparent"
-                                            r={normalizedRadius - stroke}
+                                            r={80}
                                             stroke="#4cd7f6"
-                                            strokeWidth={stroke}
-                                            strokeDasharray={circumference + ' ' + circumference}
+                                            strokeWidth={10}
+                                            strokeDasharray={innerCircumference + ' ' + innerCircumference}
                                             style={{ strokeDashoffset: strokeDashoffsetSOC2, transition: 'stroke-dashoffset 1s ease' }}
                                             strokeLinecap="round"
                                         ></circle>
                                     </svg>
                                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                                         <span className="font-data-lg text-5xl text-on-surface">{riskScore}</span>
-                                        <span className="text-xs text-on-surface-variant tracking-widest font-bold">AVG SCORE</span>
+                                        <span className="text-xs text-on-surface-variant tracking-widest font-bold mt-1">AVG SCORE</span>
                                     </div>
                                 </div>
                                 <div className="space-y-4">
