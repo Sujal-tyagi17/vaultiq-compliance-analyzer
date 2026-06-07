@@ -128,7 +128,7 @@ export default function Upload({ uploadedFiles, onUploadFile, isUploading }) {
             </div>
             <h2 className="font-headline-md text-headline-md text-primary mb-2">Ingest New Intelligence</h2>
             <p className="text-on-surface-variant text-body-md mb-8 max-w-md text-center">
-              Drag and drop policy documents, audit logs, or compliance frameworks. Supported formats: PDF, DOCX, CSV.
+              Drag and drop policy documents, audit logs, or compliance frameworks. Supported format: PDF only.
             </p>
             <button className="px-8 py-3 bg-primary text-on-primary font-bold rounded-lg flex items-center gap-2 hover:shadow-[0_0_15px_rgba(168,232,255,0.4)] transition-all pointer-events-none">
               <span className="material-symbols-outlined">add</span>
@@ -139,7 +139,7 @@ export default function Upload({ uploadedFiles, onUploadFile, isUploading }) {
               ref={fileInputRef}
               onChange={handleFileChange}
               className="hidden"
-              accept=".pdf,.docx,.csv,.txt"
+              accept=".pdf"
             />
           </div>
 

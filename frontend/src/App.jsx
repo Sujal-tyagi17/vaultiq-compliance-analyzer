@@ -147,7 +147,14 @@ export default function App() {
       })
 
       if (!response.ok) {
-        throw new Error(`Server returned ${response.status}: ${response.statusText}`)
+        let errorMsg = `Server returned ${response.status}: ${response.statusText}`
+        try {
+          const errData = await response.json()
+          if (errData && errData.detail) {
+            errorMsg = errData.detail
+          }
+        } catch (_) {}
+        throw new Error(errorMsg)
       }
 
       const result = await response.json()
@@ -201,7 +208,14 @@ export default function App() {
       })
 
       if (!response.ok) {
-        throw new Error(`Server returned ${response.status}: ${response.statusText}`)
+        let errorMsg = `Server returned ${response.status}: ${response.statusText}`
+        try {
+          const errData = await response.json()
+          if (errData && errData.detail) {
+            errorMsg = errData.detail
+          }
+        } catch (_) {}
+        throw new Error(errorMsg)
       }
 
       const result = await response.json()
@@ -234,7 +248,14 @@ export default function App() {
     try {
       const res = await fetch('/report')
       if (!res.ok) {
-        throw new Error(`Server returned ${res.status}: ${res.statusText}`)
+        let errorMsg = `Server returned ${res.status}: ${res.statusText}`
+        try {
+          const errData = await res.json()
+          if (errData && errData.detail) {
+            errorMsg = errData.detail
+          }
+        } catch (_) {}
+        throw new Error(errorMsg)
       }
       const data = await res.json()
       if (data.message === 'No document uploaded') {

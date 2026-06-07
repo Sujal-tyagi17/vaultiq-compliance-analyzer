@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -46,14 +46,39 @@ async def upload_pdf(file: UploadFile = File(...)):
 
     global latest_txt
 
+    if not file.filename.lower().endswith('.pdf'):
+        raise HTTPException(
+            status_code=400,
+            detail="Only PDF files are supported."
+        )
+
+    # Ensure uploads directory exists
+    os.makedirs("uploads", exist_ok=True)
     fp = f"uploads/{file.filename}"
 
-    with open(fp, "wb") as b:
-        shutil.copyfileobj(file.file, b)
+    try:
+        with open(fp, "wb") as b:
+            shutil.copyfileobj(file.file, b)
 
-    latest_txt = read_pdf(fp)
+        latest_txt = read_pdf(fp)
+        
+        # Verify the file is not empty/unreadable
+        if not latest_txt or not latest_txt.strip():
+            raise ValueError("The uploaded file does not contain any readable text. Please make sure it is a valid PDF document with text content.")
 
-    add_doc(latest_txt)
+        add_doc(latest_txt)
+
+    except Exception as e:
+        # Clean up the file if it was created
+        if os.path.exists(fp):
+            try:
+                os.remove(fp)
+            except Exception:
+                pass
+        raise HTTPException(
+            status_code=400,
+            detail=f"Failed to process PDF: {str(e)}"
+        )
 
     return {
         "message": "File uploaded and indexed successfully",
