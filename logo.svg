@@ -1,0 +1,10 @@
+<svg viewBox="0 0 230 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded square background matching VaultIQ visual theme -->
+  <rect x="5" y="5" width="50" height="50" rx="12" fill="#00D4FF" />
+  <!-- Shield outline inside the square -->
+  <path d="M30 17 C26.5 17 20 18.5 20 21 V30 C20 37.5 26.5 41 30 43 C33.5 41 40 37.5 40 30 V21 C40 18.5 33.5 17 30 17 Z" fill="none" stroke="#003642" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Text next to the logo -->
+  <text x="70" y="42" font-family="Sora, sans-serif" font-weight="800" font-size="36" letter-spacing="-0.5">
+    <tspan fill="#F1F5F9">Vault</tspan><tspan fill="#00D4FF">IQ</tspan>
+  </text>
+</svg>

@@ -403,13 +403,16 @@
             return (
                 <aside className="fixed left-0 top-0 h-full w-[240px] bg-surface-container-lowest border-r border-outline-variant flex flex-col z-50 select-none">
                     <div className="p-6">
-                        <div className="flex items-center gap-2 cursor-pointer" onClick={() => onNavigate('dashboard')}>
-                            <div className="w-8 h-8 rounded flex items-center justify-center bg-primary-container border border-primary">
-                                <span className="material-symbols-outlined text-on-primary-container text-lg">shield</span>
+                        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('dashboard')}>
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#00D4FF] shadow-[0_0_12px_rgba(0,212,255,0.2)]">
+                                <span className="material-symbols-outlined text-[#003642] text-xl font-bold">shield</span>
                             </div>
-                            <div className="font-headline-md text-headline-md font-bold text-primary">VaultIQ</div>
+                            <div className="font-headline-md text-headline-md font-bold select-none tracking-tight">
+                                <span className="text-[#DFE3E7]">Vault</span>
+                                <span className="text-[#00D4FF]">IQ</span>
+                            </div>
                         </div>
-                        <div className="mt-1 font-label-caps text-label-caps text-on-surface-variant opacity-60">Enterprise Intelligence</div>
+                        <div className="mt-2 font-label-caps text-label-caps text-on-surface-variant opacity-60">Enterprise Intelligence</div>
                     </div>
                     <nav className="flex-1 mt-4">
                         {links.map((link) => {

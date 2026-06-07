@@ -1,4 +1,4 @@
-# VaultIQ Compliance Analyzer
+# <img src="./logo.svg" height="44" valign="middle" alt="VaultIQ Logo"> Compliance Analyzer
 
 An AI-powered compliance document auditing and retrieval-augmented generation (RAG) assistant. VaultIQ ingests large enterprise policy documents (GDPR, HIPAA, SOC2, ISO27001) and enables risk analysis, semantic chat questions, and auto-generated compliance reports.
 

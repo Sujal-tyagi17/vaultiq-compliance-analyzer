@@ -12,12 +12,12 @@ export default function Sidebar({ currentPage, onNavigate }) {
     <aside className="fixed left-0 top-0 h-full w-[240px] bg-surface-container-lowest border-r border-outline-variant flex flex-col z-50">
       <div className="p-6">
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('dashboard')}>
-          <div className="w-10 h-10 border-2 border-primary rotate-45 flex items-center justify-center">
-            <span className="material-symbols-outlined text-primary rotate-[-45deg]" style={{ fontVariationSettings: "'FILL' 1" }}>shield</span>
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#00D4FF] shadow-[0_0_12px_rgba(0,212,255,0.2)]">
+            <span className="material-symbols-outlined text-[#003642] text-xl font-bold">shield</span>
           </div>
-          <div>
-            <h1 className="font-headline-md text-headline-md font-bold text-primary leading-none">VaultIQ</h1>
-            <p className="font-label-caps text-label-caps text-on-surface-variant mt-1">Enterprise Intelligence</p>
+          <div className="font-headline-md text-headline-md font-bold select-none tracking-tight">
+            <span className="text-[#DFE3E7]">Vault</span>
+            <span className="text-[#00D4FF]">IQ</span>
           </div>
         </div>
       </div>
