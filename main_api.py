@@ -15,6 +15,7 @@ from agents.report_agent import generate_report
 
 load_dotenv()
 
+
 genai.configure(
     api_key=os.getenv("GOOGLE_API_KEY")
 )
