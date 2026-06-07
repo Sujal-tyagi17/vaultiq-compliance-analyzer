@@ -9,28 +9,28 @@ An AI-powered compliance document auditing and retrieval-augmented generation (R
 ### Compliance Dashboard Overview
 *Real-time compliance status, framework health, and active agent statuses.*
 <!-- Replace the path below with your dashboard screenshot file path -->
-![VaultIQ Compliance Dashboard](docs/screenshots/dashboard.png)
+![VaultIQ Compliance Dashboard](screenshots\dashboard.png)
 
 ---
 
 ### Intelligent Document Upload Portal
 *Drag-and-drop file ingestion queue backed by a step-by-step extraction pipeline.*
 <!-- Replace the path below with your upload portal screenshot file path -->
-![Document Upload Portal](docs/screenshots/upload.png)
+![Document Upload Portal](screenshots\upload.png)
 
 ---
 
 ### AI Compliance Chat Assistant
 *Conversational interface querying vector databases with highlighting for detected gaps.*
 <!-- Replace the path below with your chat assistant screenshot file path -->
-![Compliance Chat Assistant](docs/screenshots/chat.png)
+![Compliance Chat Assistant](screenshots\chat.png)
 
 ---
 
 ### Risk Intelligence & Audit Reports
 *Auto-generated compliance reports, optimal range posture gauges, and agent logs.*
 <!-- Replace the path below with your risk reports screenshot file path -->
-![Risk Intelligence Reports](docs/screenshots/reports.png)
+![Risk Intelligence Reports](screenshots\reports.png)
 
 ---
 
