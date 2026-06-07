@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VaultIQ | Intelligent Compliance Analyzer</title>
+    <meta name="description" content="AI-powered compliance document analyzer for GDPR, HIPAA, SOC2, and ISO27001 frameworks. Upload, analyze, chat, and generate risk reports instantly."/>
+
+    <!-- Tailwind CSS (CDN with custom config matching Stitch design tokens) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts: Sora (headlines), DM Sans (body), DM Mono (data) -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet"/>
+
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- React and Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind Config (VaultIQ Design Tokens from Stitch) -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-bright": "#353a3d",
+                        "inverse-surface": "#dfe3e7",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "surface-tint": "#3cd7ff",
+                        "outline": "#859398",
+                        "on-primary": "#003642",
+                        "on-surface": "#dfe3e7",
+                        "surface-container-highest": "#313539",
+                        "surface-container": "#1b2023",
+                        "on-tertiary-fixed": "#111c2d",
+                        "on-background": "#dfe3e7",
+                        "on-primary-fixed": "#001f27",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#263143",
+                        "surface-container-high": "#262b2e",
+                        "on-secondary": "#003640",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "outline-variant": "#3c494e",
+                        "primary": "#a8e8ff",
+                        "background": "#0f1417",
+                        "inverse-on-surface": "#2c3134",
+                        "surface": "#0f1417",
+                        "secondary-container": "#03b5d3",
+                        "primary-fixed": "#b4ebff",
+                        "on-secondary-fixed": "#001f26",
+                        "tertiary-fixed": "#d8e3fb",
+                        "on-primary-fixed-variant": "#004e5f",
+                        "on-secondary-container": "#00424e",
+                        "on-primary-container": "#00586b",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#3cd7ff",
+                        "inverse-primary": "#00677e",
+                        "on-tertiary-container": "#455064",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "surface-variant": "#313539",
+                        "on-surface-variant": "#bbc9cf",
+                        "tertiary-container": "#b8c3db",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "primary-container": "#00d4ff",
+                        "surface-container-lowest": "#0a0f12",
+                        "surface-container-low": "#171c1f",
+                        "surface-dim": "#0f1417",
+                        "tertiary": "#d4dff7",
+                        "secondary": "#4cd7f6",
+                        "secondary-fixed": "#acedff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    spacing: {
+                        unit: "4px",
+                        gutter: "16px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "margin-desktop": "32px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "data-lg": ["DM Mono"],
+                        "headline-lg-mobile": ["Sora"],
+                        "body-lg": ["DM Sans"],
+                        "label-caps": ["DM Sans"],
+                        "data-md": ["DM Mono"],
+                        "body-sm": ["DM Sans"],
+                        "body-md": ["DM Sans"],
+                        "display-lg": ["Sora"]
+                    },
+                    fontSize: {
+                        "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "600" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "data-lg": ["18px", { lineHeight: "24px", fontWeight: "500" }],
+                        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }],
+                        "data-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0f12;
+            background-image: radial-gradient(#1E293B 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: #dfe3e7;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        ::selection {
+            background-color: #00d4ff;
+            color: #00586b;
+        }
+        .glass-card {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid #1E293B;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+            border-color: #3cd7ff;
+        }
+        .primary-glow {
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+        #cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: left 0.1s ease-out, top 0.1s ease-out;
+        }
+        .agent-pulse {
+            position: relative;
+        }
+        .agent-pulse::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #a8e8ff;
+            border-radius: 50%;
+            left: -14px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(168, 232, 255, 0.7); }
+            70% { transform: translateY(-50%) scale(1); box-shadow: 0 0 0 6px rgba(168, 232, 255, 0); }
+            100% { transform: translateY(-50%) scale(0.95); box-shadow: 0 0 0 0 rgba(168, 232, 255, 0); }
+        }
+        @keyframes pulse-red {
+            0%, 100% { background-color: rgba(147, 0, 10, 0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { background-color: rgba(147, 0, 10, 1); box-shadow: 0 0 20px 4px rgba(239, 68, 68, 0.6); }
+        }
+        .animate-pulse-red {
+            animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-subtle {
+            animation: bounce-subtle 2s infinite ease-in-out;
+        }
+        .status-pill {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .risk-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .pipeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, #3cd7ff 0%, #1E293B 100%);
+        }
+        .chat-bubble-ai {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid #3c494e;
+        }
+        .chat-bubble-user {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(168, 232, 255, 0.3);
+        }
+        .risk-alert {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar,
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track,
+        ::-webkit-scrollbar-track {
+            background: #0f1417;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb,
+        ::-webkit-scrollbar-thumb {
+            background: #3c494e;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover,
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8e8ff;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .view-container {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .view-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .view-hidden {
+            display: none !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .nav-link.active {
+            color: #a8e8ff;
+            background-color: #262b2e;
+            border-right: 2px solid #a8e8ff;
+        }
+        .nav-link:not(.active):hover {
+            background-color: #1b2023;
+            color: #a8e8ff;
+        }
+        .drop-zone-active {
+            border-color: #a8e8ff !important;
+            background-color: rgba(168, 232, 255, 0.1) !important;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2) inset;
+        }
+        @keyframes typing-bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #a8e8ff;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+        }
+        .typing-dot:nth-child(1) { animation: typing-bounce 1.4s infinite 0s; }
+        .typing-dot:nth-child(2) { animation: typing-bounce 1.4s infinite 0.2s; }
+        .typing-dot:nth-child(3) { animation: typing-bounce 1.4s infinite 0.4s; }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #a8e8ff !important;
+            box-shadow: 0 0 0 1px rgba(168, 232, 255, 0.2);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(168, 232, 255, 0.4);
+        }
+        .table-row-hover:hover {
+            background-color: rgba(168, 232, 255, 0.05);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+        .risk-gauge-container {
+            position: relative;
+            width: 160px;
+            height: 80px;
+            overflow: hidden;
+        }
+        .risk-gauge {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 12px solid #1E293B;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+            transform: rotate(-45deg);
+        }
+        .risk-gauge-active {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 12px solid #00d4ff;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+            transform: rotate(45deg);
+            transition: transform 1s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+    <div id="root"></div>
+
+    <!-- Core React Code in Babel Script -->
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ─── TOAST ITEM & TOAST CONTAINER ───
+        function Toast({ toasts, onClose }) {
+            if (!toasts || toasts.length === 0) return null;
+            return (
+                <div className="fixed bottom-8 right-8 z-[100] flex flex-col gap-3 pointer-events-none">
+                    {toasts.map((toast) => (
+                        <ToastItem key={toast.id} toast={toast} onClose={onClose} />
+                    ))}
+                </div>
+            );
+        }
+
+        function ToastItem({ toast, onClose }) {
+            const { id, message, type } = toast;
+
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    onClose(id);
+                }, 4000);
+                return () => clearTimeout(timer);
+            }, [id, onClose]);
+
+            let bgClass = 'bg-surface-container-high border-primary text-primary';
+            let iconName = 'check_circle';
+
+            if (type === 'error') {
+                bgClass = 'bg-error-container border-error text-on-error-container';
+                iconName = 'error';
+            } else if (type === 'warning') {
+                bgClass = 'bg-yellow-950/80 border-yellow-500 text-yellow-200';
+                iconName = 'warning';
+            }
+
+            return (
+                <div
+                    onClick={() => onClose(id)}
+                    className={`pointer-events-auto cursor-pointer ${bgClass} px-6 py-4 rounded-xl shadow-2xl border backdrop-blur-xl flex items-center gap-3 animate-fade-in-up max-w-md transition-all duration-300`}
+                >
+                    <span className="material-symbols-outlined">{iconName}</span>
+                    <span className="text-sm font-bold">{message}</span>
+                </div>
+            );
+        }
+
+        // ─── SIDEBAR NAVIGATION ───
+        function Sidebar({ currentPage, onNavigate }) {
+            const links = [
+                { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+                { id: 'upload', label: 'Upload', icon: 'upload_file' },
+                { id: 'chat', label: 'Chat', icon: 'forum' },
+                { id: 'reports', label: 'Reports', icon: 'assessment' }
+            ];
+
+            return (
+                <aside className="fixed left-0 top-0 h-full w-[240px] bg-surface-container-lowest border-r border-outline-variant flex flex-col z-50 select-none">
+                    <div className="p-6">
+                        <div className="flex items-center gap-2 cursor-pointer" onClick={() => onNavigate('dashboard')}>
+                            <div className="w-8 h-8 rounded flex items-center justify-center bg-primary-container border border-primary">
+                                <span className="material-symbols-outlined text-on-primary-container text-lg">shield</span>
+                            </div>
+                            <div className="font-headline-md text-headline-md font-bold text-primary">VaultIQ</div>
+                        </div>
+                        <div className="mt-1 font-label-caps text-label-caps text-on-surface-variant opacity-60">Enterprise Intelligence</div>
+                    </div>
+                    <nav className="flex-1 mt-4">
+                        {links.map((link) => {
+                            const isActive = currentPage === link.id;
+                            return (
+                                <button
+                                    key={link.id}
+                                    onClick={() => onNavigate(link.id)}
+                                    className={`w-full flex items-center gap-3 px-6 py-3 transition-all duration-200 text-left ${
+                                        isActive
+                                            ? 'text-primary bg-surface-container-high border-r-2 border-primary'
+                                            : 'text-on-surface-variant hover:bg-surface-container hover:text-primary'
+                                    }`}
+                                >
+                                    <span className="material-symbols-outlined">{link.icon}</span>
+                                    <span className="font-label-caps text-label-caps">{link.label}</span>
+                                </button>
+                            );
+                        })}
+                    </nav>
+                    <div className="p-4 border-t border-outline-variant">
+                        <div className="flex items-center gap-3 p-2 rounded-lg bg-surface-container-low">
+                            <img
+                                alt="User Profile"
+                                className="w-8 h-8 rounded-full border border-outline object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUYcCTb0kurp5beGZFavmERtKK-iZv4mh3KgmIjjOxbAqSfAlM28VTVH0Ud-e4Zt-wrdfuLLu-zBtJWenMoM5H9VX1L_4mnGqxmi37InrxHub4YOAOE2Drzz3-rcMeMJc9Voic89Psclf3sCc2-Ga21MUV_D07S2uOJjQK6sJ7y3oxBjlMfPnnl-4DsRbcab2J0OF1F5pA_KtzgA0PKVi4K0yd8y7P1NEc5V7tv8lOmHLNTmytUg0sAYZ5XdBoDQlQz5lL_pYz3beB"
+                            />
+                            <div className="overflow-hidden">
+                                <p className="text-sm font-bold truncate">A. Rivera</p>
+                                <p className="text-[10px] text-on-surface-variant uppercase tracking-wider">Risk Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            );
+        }
+
+        // ─── TOP APP HEADER ───
+        function Header({ title }) {
+            return (
+                <header className="flex justify-between items-center w-full h-16 px-margin-desktop sticky top-0 bg-surface/80 backdrop-blur-xl border-b border-outline-variant z-40 select-none">
+                    <div className="flex items-center gap-4">
+                        <h2 className="font-headline-md text-headline-md font-bold text-primary">{title}</h2>
+                        <div className="px-3 py-1 bg-surface-container-high rounded-full border border-outline-variant flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                            <span className="font-label-caps text-label-caps text-secondary uppercase tracking-wider">System Online</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-6">
+                        <div className="relative">
+                            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                            <input
+                                className="bg-surface-container-lowest border border-outline-variant rounded px-10 py-1 text-sm focus:border-primary focus:ring-0 w-64 transition-all outline-none"
+                                placeholder="Search knowledge vault..."
+                                type="text"
+                            />
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <button className="text-on-surface-variant hover:text-primary transition-colors relative">
+                                <span className="material-symbols-outlined">notifications</span>
+                                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-error rounded-full"></span>
+                            </button>
+                            <button className="text-on-surface-variant hover:text-primary transition-colors">
+                                <span className="material-symbols-outlined">help_outline</span>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        // ─── VIEW 1: DASHBOARD OVERVIEW ───
+        function Dashboard({ data, onNavigate }) {
+            const [gaugeRotate, setGaugeRotate] = useState(-45);
+
+            const docsCount = data?.documents ?? 0;
+            const riskScore = docsCount > 0 ? (data?.risk_score ?? 0) : 84;
+            const gapsCount = docsCount > 0 ? (data?.gaps ?? 0) : 7;
+            const isDemoMode = docsCount === 0;
+
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    const rotation = -45 + (riskScore / 100) * 180;
+                    setGaugeRotate(rotation);
+                }, 300);
+                return () => clearTimeout(timer);
+            }, [riskScore]);
+
+            const radius = 100;
+            const stroke = 16;
+            const normalizedRadius = radius - stroke * 2;
+            const circumference = normalizedRadius * 2 * Math.PI;
+            
+            const strokeDashoffsetGDPR = circumference - (92 / 100) * circumference;
+            const strokeDashoffsetSOC2 = circumference - (78 / 100) * circumference;
+
+            return (
+                <div className="p-8 space-y-8 animate-fade-in-up">
+                    <div className="flex justify-between items-end flex-wrap gap-4">
+                        <div>
+                            <h2 className="font-headline-lg text-headline-lg text-primary tracking-tight">Compliance Overview</h2>
+                            <p className="text-on-surface-variant font-body-md mt-2">
+                                {isDemoMode ? (
+                                    <>Showing Demo Data · Ingest your own compliance documents to view active posture</>
+                                ) : (
+                                    <>Last analyzed: Just now · {docsCount} active framework documents analyzed</>
+                                )}
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => onNavigate('upload')}
+                            className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-bold hover:opacity-90 transition-all primary-glow btn-glow"
+                        >
+                            <span className="material-symbols-outlined">analytics</span>
+                            Run New Analysis
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="glass-card p-6 rounded-xl relative overflow-hidden group">
+                            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                <span className="material-symbols-outlined text-8xl">description</span>
+                            </div>
+                            <p className="font-label-caps text-label-caps text-on-surface-variant mb-2">DOCUMENTS ANALYZED</p>
+                            <div className="flex items-baseline gap-2">
+                                <span className="font-data-lg text-4xl text-primary">{isDemoMode ? 142 : docsCount}</span>
+                                <span className="text-xs text-secondary">{isDemoMode ? '+12 this week' : 'active'}</span>
+                            </div>
+                        </div>
+
+                        <div className="glass-card p-6 rounded-xl relative overflow-hidden group">
+                            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                <span className="material-symbols-outlined text-8xl">grid_view</span>
+                            </div>
+                            <p className="font-label-caps text-label-caps text-on-surface-variant mb-2">ACTIVE FRAMEWORKS</p>
+                            <div className="flex items-baseline gap-2">
+                                <span className="font-data-lg text-4xl text-primary">4</span>
+                                <span className="text-xs text-on-surface-variant">Global Reach</span>
+                            </div>
+                        </div>
+
+                        <div className="glass-card p-6 rounded-xl relative overflow-hidden group">
+                            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                <span className="material-symbols-outlined text-8xl">warning</span>
+                            </div>
+                            <p className="font-label-caps text-label-caps text-on-surface-variant mb-2">COMPLIANCE GAPS</p>
+                            <div className="flex items-baseline gap-2">
+                                <span className={`font-data-lg text-4xl ${gapsCount > 0 ? 'text-error' : 'text-primary'}`}>{gapsCount}</span>
+                                <span className="text-xs text-on-surface-variant">{isDemoMode ? '-2 resolved' : 'identified'}</span>
+                            </div>
+                        </div>
+
+                        <div className="glass-card p-6 rounded-xl relative overflow-hidden group">
+                            <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                <span className="material-symbols-outlined text-8xl">verified_user</span>
+                            </div>
+                            <p className="font-label-caps text-label-caps text-on-surface-variant mb-2">AVG COMPLIANCE SCORE</p>
+                            <div className="flex items-baseline gap-2">
+                                <span className="font-data-lg text-4xl text-primary">{riskScore}%</span>
+                                <span className="text-xs text-secondary-fixed-dim">Target 95%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+                        <div className="lg:col-span-6 glass-card rounded-xl p-8 flex flex-col">
+                            <div className="flex justify-between items-start mb-8">
+                                <div>
+                                    <h3 className="font-headline-md text-headline-md text-on-surface">Framework Health</h3>
+                                    <p className="text-sm text-on-surface-variant">Real-time aggregate compliance by sector</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <span className="w-3 h-3 rounded-full bg-primary inline-block"></span>
+                                    <span className="w-3 h-3 rounded-full bg-secondary inline-block"></span>
+                                    <span className="w-3 h-3 rounded-full bg-outline inline-block"></span>
+                                </div>
+                            </div>
+                            <div className="flex-1 flex items-center justify-around flex-wrap gap-6">
+                                <div className="relative">
+                                    <svg className="w-64 h-64 -rotate-90">
+                                        <circle cx="128" cy="128" fill="transparent" r={normalizedRadius} stroke="#1b2023" strokeWidth={stroke}></circle>
+                                        <circle
+                                            cx="128"
+                                            cy="128"
+                                            fill="transparent"
+                                            r={normalizedRadius}
+                                            stroke="#a8e8ff"
+                                            strokeWidth={stroke}
+                                            strokeDasharray={circumference + ' ' + circumference}
+                                            style={{ strokeDashoffset: strokeDashoffsetGDPR, transition: 'stroke-dashoffset 1s ease' }}
+                                            strokeLinecap="round"
+                                        ></circle>
+                                        <circle
+                                            cx="128"
+                                            cy="128"
+                                            fill="transparent"
+                                            r={normalizedRadius - stroke}
+                                            stroke="#4cd7f6"
+                                            strokeWidth={stroke}
+                                            strokeDasharray={circumference + ' ' + circumference}
+                                            style={{ strokeDashoffset: strokeDashoffsetSOC2, transition: 'stroke-dashoffset 1s ease' }}
+                                            strokeLinecap="round"
+                                        ></circle>
+                                    </svg>
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span className="font-data-lg text-5xl text-on-surface">{riskScore}</span>
+                                        <span className="text-xs text-on-surface-variant tracking-widest font-bold">AVG SCORE</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-2 h-8 bg-primary"></div>
+                                        <div>
+                                            <p className="text-xs text-on-surface-variant font-bold">GDPR</p>
+                                            <p className="font-data-md text-primary">92% COMPLIANT</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-2 h-8 bg-secondary"></div>
+                                        <div>
+                                            <p className="text-xs text-on-surface-variant font-bold">SOC2</p>
+                                            <p className="font-data-md text-secondary">78% COMPLIANT</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-2 h-8 bg-surface-container-highest"></div>
+                                        <div>
+                                            <p className="text-xs text-on-surface-variant font-bold">HIPAA</p>
+                                            <p className="font-data-md text-on-surface-variant">82% COMPLIANT</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="lg:col-span-4 glass-card rounded-xl p-8">
+                            <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Risk Severity</h3>
+                            <p className="text-sm text-on-surface-variant mb-8">Detected vulnerabilities across fleet</p>
+                            <div className="space-y-6">
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-2">
+                                        <span className="text-error uppercase">Critical</span>
+                                        <span className="text-on-surface font-data-md">{isDemoMode ? '07' : gapsCount}</span>
+                                    </div>
+                                    <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                        <div className="bg-error h-full transition-all duration-1000" style={{ width: isDemoMode ? '15%' : `${Math.min(gapsCount * 10, 100)}%` }}></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-2">
+                                        <span className="text-secondary-container uppercase">High</span>
+                                        <span className="text-on-surface font-data-md">{isDemoMode ? '14' : Math.floor(gapsCount * 0.5)}</span>
+                                    </div>
+                                    <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                        <div className="bg-secondary-container h-full transition-all duration-1000" style={{ width: isDemoMode ? '35%' : `${Math.min(gapsCount * 5, 100)}%` }}></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-2">
+                                        <span className="text-primary uppercase">Medium</span>
+                                        <span className="text-on-surface font-data-md">{isDemoMode ? '42' : '2'}</span>
+                                    </div>
+                                    <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                        <div className="bg-primary h-full transition-all duration-1000" style={{ width: '65%' }}></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-2">
+                                        <span className="text-on-surface-variant uppercase">Low</span>
+                                        <span className="text-on-surface font-data-md">{isDemoMode ? '89' : '5'}</span>
+                                    </div>
+                                    <div className="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                        <div className="bg-on-surface-variant h-full transition-all duration-1000" style={{ width: '90%' }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div className="lg:col-span-8 glass-card rounded-xl overflow-hidden">
+                            <div className="p-6 border-b border-outline-variant flex justify-between items-center">
+                                <h3 className="font-headline-md text-headline-md text-on-surface">Framework Compliance</h3>
+                                <button className="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                                    Export PDF <span className="material-symbols-outlined text-sm">download</span>
+                                </button>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left">
+                                    <thead>
+                                        <tr className="bg-surface-container-low">
+                                            <th className="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant">FRAMEWORK</th>
+                                            <th className="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant text-center">STATUS</th>
+                                            <th className="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant text-right">LAST SCAN</th>
+                                            <th className="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant text-right">ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-outline-variant">
+                                        <tr className="hover:bg-surface-container-high transition-colors table-row-hover">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+                                                        <span className="material-symbols-outlined text-primary text-lg">policy</span>
+                                                    </div>
+                                                    <span className="font-bold">GDPR Compliance</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                <span className={`px-3 py-1 text-xs font-bold rounded-full border ${isDemoMode || riskScore >= 80 ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'} status-pill`}>
+                                                    {isDemoMode || riskScore >= 80 ? 'VALID' : 'DRIFTED'}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right font-data-md text-sm text-on-surface-variant">2h ago</td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button onClick={() => onNavigate('reports')} className="text-primary text-xs font-bold hover:glow px-3 py-1 border border-primary/30 rounded">
+                                                    VIEW REPORT
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr className="hover:bg-surface-container-high transition-colors table-row-hover">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center">
+                                                        <span className="material-symbols-outlined text-secondary text-lg">shield</span>
+                                                    </div>
+                                                    <span className="font-bold">SOC2 Type II</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                <span className="px-3 py-1 bg-yellow-500/10 text-yellow-400 text-xs font-bold rounded-full border border-yellow-500/20 status-pill">
+                                                    DRIFTED
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right font-data-md text-sm text-on-surface-variant">5h ago</td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button onClick={() => onNavigate('reports')} className="text-primary text-xs font-bold hover:glow px-3 py-1 border border-primary/30 rounded">
+                                                    VIEW REPORT
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr className="hover:bg-surface-container-high transition-colors table-row-hover">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded bg-error/10 flex items-center justify-center">
+                                                        <span className="material-symbols-outlined text-error text-lg">medical_services</span>
+                                                    </div>
+                                                    <span className="font-bold">HIPAA Security</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                <span className={`px-3 py-1 text-xs font-bold rounded-full border ${isDemoMode || gapsCount > 0 ? 'bg-error/10 text-error border-error/20' : 'bg-green-500/10 text-green-400 border-green-500/20'} status-pill`}>
+                                                    {isDemoMode || gapsCount > 0 ? 'FAILING' : 'VALID'}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right font-data-md text-sm text-on-surface-variant">12m ago</td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button onClick={() => onNavigate('reports')} className="text-primary text-xs font-bold hover:glow px-3 py-1 border border-primary/30 rounded">
+                                                    VIEW REPORT
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr className="hover:bg-surface-container-high transition-colors table-row-hover">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded bg-outline-variant/10 flex items-center justify-center">
+                                                        <span className="material-symbols-outlined text-on-surface-variant text-lg">language</span>
+                                                    </div>
+                                                    <span className="font-bold">ISO 27001</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                <span className="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-bold rounded-full border border-blue-500/20 status-pill">
+                                                    VALID
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right font-data-md text-sm text-on-surface-variant">1d ago</td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button onClick={() => onNavigate('reports')} className="text-primary text-xs font-bold hover:glow px-3 py-1 border border-primary/30 rounded">
+                                                    VIEW REPORT
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div className="lg:col-span-4 glass-card rounded-xl p-6 flex flex-col">
+                            <h3 className="font-headline-md text-headline-md text-on-surface mb-6">Agent Activity</h3>
+                            <div className="flex-1 space-y-8 overflow-y-auto pr-2 custom-scrollbar">
+                                <div className="relative pl-6 border-l border-outline-variant">
+                                    <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] bg-primary rounded-full"></div>
+                                    <div className="flex justify-between items-start mb-1">
+                                        <span className="font-bold text-sm agent-pulse">PDF Ingestion Agent</span>
+                                        <span className="font-data-md text-[10px] text-on-surface-variant uppercase">
+                                            {docsCount > 0 ? 'Idle' : 'Active'}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-on-surface-variant">
+                                        {docsCount > 0 ? 'Parsing complete. Extracted text structures.' : 'Scanning directory uploads for incoming data...'}
+                                    </p>
+                                </div>
+
+                                <div className="relative pl-6 border-l border-outline-variant">
+                                    <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] bg-secondary rounded-full"></div>
+                                    <div className="flex justify-between items-start mb-1">
+                                        <span className="font-bold text-sm agent-pulse">Risk Assessment Agent</span>
+                                        <span className="font-data-md text-[10px] text-on-surface-variant uppercase">Idle</span>
+                                    </div>
+                                    <p className="text-xs text-on-surface-variant">Cross-referencing framework gaps with BigQuery log records.</p>
+                                </div>
+
+                                <div className="relative pl-6 border-l border-outline-variant">
+                                    <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] bg-surface-bright rounded-full"></div>
+                                    <div className="flex justify-between items-start mb-1">
+                                        <span className="font-bold text-sm">Report Generation Agent</span>
+                                        <span className="font-data-md text-[10px] text-on-surface-variant uppercase">Complete</span>
+                                    </div>
+                                    <p className="text-xs text-on-surface-variant">Identified non-conforming clauses and output report logs.</p>
+                                </div>
+
+                                <div className="relative pl-6 border-l border-outline-variant opacity-60">
+                                    <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] bg-surface-bright rounded-full"></div>
+                                    <div className="flex justify-between items-start mb-1">
+                                        <span className="font-bold text-sm">System Auditor</span>
+                                        <span className="font-data-md text-[10px] text-on-surface-variant uppercase">Log Saved</span>
+                                    </div>
+                                    <p className="text-xs text-on-surface-variant">Daily integrity check passed. No tamper signatures found.</p>
+                                </div>
+                            </div>
+                            <button className="mt-6 w-full py-3 border border-outline-variant rounded-lg text-sm font-bold hover:bg-surface-container transition-colors">
+                                VIEW FULL LOGS
+                            </button>
+                        </div>
+                    </div>
+
+                    <footer className="mt-auto pt-6 border-t border-outline-variant flex justify-between items-center text-on-surface-variant flex-wrap gap-4">
+                        <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                <span className="font-label-caps text-[10px]">ALL SYSTEMS OPERATIONAL</span>
+                            </div>
+                            <div className="font-label-caps text-[10px]">VAULT-CORE V.2.4.1-STABLE</div>
+                        </div>
+                        <div className="font-data-md text-[10px] tracking-widest">
+                            ENCRYPTION: AES-256-GCM ACTIVE
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        // ─── VIEW 2: UPLOAD PORTAL ───
+        function Upload({ uploadedFiles, onUploadFile, isUploading }) {
+            const [dragActive, setDragActive] = useState(false);
+            const [activeFilter, setActiveFilter] = useState('all');
+            const fileInputRef = useRef(null);
+
+            const getStepStatus = (stepIndex) => {
+                if (!isUploading) {
+                    if (uploadedFiles.length > 0 && uploadedFiles[0].status === 'complete') {
+                        return 'complete';
+                    }
+                    return 'idle';
+                }
+                
+                const activeFile = uploadedFiles[0];
+                if (!activeFile) return 'idle';
+
+                const progress = activeFile.progress;
+                if (stepIndex === 1) {
+                    return progress >= 30 ? 'complete' : 'active';
+                }
+                if (stepIndex === 2) {
+                    if (progress < 30) return 'idle';
+                    return progress >= 60 ? 'complete' : 'active';
+                }
+                if (stepIndex === 3) {
+                    if (progress < 60) return 'idle';
+                    return progress >= 90 ? 'complete' : 'active';
+                }
+                if (stepIndex === 4) {
+                    if (progress < 90) return 'idle';
+                    return progress >= 100 ? 'complete' : 'active';
+                }
+                return 'idle';
+            };
+
+            const handleDrag = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.type === "dragenter" || e.type === "dragover") {
+                    setDragActive(true);
+                } else if (e.type === "dragleave") {
+                    setDragActive(false);
+                }
+            };
+
+            const handleDrop = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setDragActive(false);
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    onUploadFile(e.dataTransfer.files[0]);
+                }
+            };
+
+            const handleFileChange = (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    onUploadFile(e.target.files[0]);
+                }
+            };
+
+            const filterPills = [
+                { id: 'all', label: 'All' },
+                { id: 'gdpr', label: 'GDPR' },
+                { id: 'hipaa', label: 'HIPAA' },
+                { id: 'soc2', label: 'SOC2' },
+                { id: 'iso27001', label: 'ISO27001' }
+            ];
+
+            const filteredHistory = uploadedFiles.filter(file => {
+                if (activeFilter === 'all') return true;
+                const frameworks = ['gdpr', 'hipaa', 'soc2', 'iso27001'];
+                const mockFramework = frameworks[file.name.length % frameworks.length];
+                return mockFramework === activeFilter;
+            });
+
+            return (
+                <div className="p-8 space-y-6 animate-fade-in-up">
+                    <div className="flex flex-wrap gap-3">
+                        {filterPills.map(pill => {
+                            const isActive = activeFilter === pill.id;
+                            return (
+                                <button
+                                    key={pill.id}
+                                    onClick={() => setActiveFilter(pill.id)}
+                                    className={`px-4 py-1.5 rounded-full text-xs font-bold font-label-caps transition-all ${
+                                        isActive
+                                            ? 'bg-primary text-on-primary'
+                                            : 'glass-card text-on-surface-variant hover:bg-surface-container'
+                                    }`}
+                                >
+                                    {pill.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <div className="grid grid-cols-12 gap-6">
+                        <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">
+                            <div
+                                onDragEnter={handleDrag}
+                                onDragOver={handleDrag}
+                                onDragLeave={handleDrag}
+                                onDrop={handleDrop}
+                                onClick={() => fileInputRef.current.click()}
+                                className={`glass-card rounded-xl p-10 flex flex-col items-center justify-center border-dashed border-2 min-h-[320px] transition-all cursor-pointer group ${
+                                    dragActive
+                                        ? 'border-primary bg-primary/10 drop-zone-active'
+                                        : 'border-primary/40 bg-primary/5 hover:bg-primary/10'
+                                }`}
+                            >
+                                <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                    <span className="material-symbols-outlined text-4xl text-primary animate-bounce-subtle" style={{ fontVariationSettings: "'FILL' 1" }}>
+                                        cloud_upload
+                                    </span>
+                                </div>
+                                <h2 className="font-headline-md text-headline-md text-primary mb-2">Ingest New Intelligence</h2>
+                                <p className="text-on-surface-variant text-body-md mb-8 max-w-md text-center">
+                                    Drag and drop policy documents, audit logs, or compliance frameworks. Supported formats: PDF, DOCX, CSV.
+                                </p>
+                                <button className="px-8 py-3 bg-primary text-on-primary font-bold rounded-lg flex items-center gap-2 hover:shadow-[0_0_15px_rgba(168,232,255,0.4)] transition-all pointer-events-none">
+                                    <span className="material-symbols-outlined">add</span>
+                                    Browse Files
+                                </button>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                    accept=".pdf,.docx,.csv,.txt"
+                                />
+                            </div>
+
+                            <div className="glass-card rounded-xl p-6">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-headline-md text-lg text-primary flex items-center gap-2">
+                                        <span className="material-symbols-outlined">pending_actions</span>
+                                        Active Upload Queue
+                                    </h3>
+                                    <span className="text-on-surface-variant text-xs font-label-caps uppercase">
+                                        {uploadedFiles.filter(f => f.status !== 'complete').length} Task(s) Active
+                                    </span>
+                                </div>
+                                <div className="space-y-6">
+                                    {uploadedFiles.length === 0 ? (
+                                        <p className="text-on-surface-variant text-sm text-center py-4 opacity-60">
+                                            No files in queue. Upload a document to get started.
+                                        </p>
+                                    ) : (
+                                        uploadedFiles.map((f, i) => {
+                                            const isDone = f.status === 'complete';
+                                            const isErr = f.status === 'error';
+                                            const statusColor = isDone ? 'primary' : isErr ? 'error' : 'secondary';
+                                            const statusLabel = isDone ? 'READY' : isErr ? 'FAILED' : 'EXTRACTING';
+                                            const barWidth = Math.min(f.progress || 0, 100);
+                                            const icon = f.name.endsWith('.pdf') ? 'picture_as_pdf' : 'description';
+                                            const glow = isDone ? 'shadow-[0_0_8px_rgba(168,232,255,0.5)]' : !isErr ? 'shadow-[0_0_8px_rgba(76,215,246,0.5)]' : '';
+
+                                            return (
+                                                <div key={i} className="space-y-2 animate-fade-in-up">
+                                                    <div className="flex justify-between items-end">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className={`material-symbols-outlined text-${statusColor}`}>{icon}</span>
+                                                            <div>
+                                                                <p className="text-sm font-bold">{f.name}</p>
+                                                                <p className="text-[10px] text-on-surface-variant uppercase tracking-tighter">
+                                                                    {f.size} • {isDone ? 'Processing Complete' : isErr ? 'Upload Failed' : 'Extraction in Progress'}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className={`status-pill bg-${statusColor}/10 text-${statusColor} border border-${statusColor}/20`}>
+                                                                {statusLabel}
+                                                            </span>
+                                                            <span className={`font-data-md text-${statusColor}`}>{Math.round(barWidth)}%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+                                                        <div
+                                                            className={`h-full bg-${statusColor} ${glow} transition-all duration-300`}
+                                                            style={{ width: `${barWidth}%` }}
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-span-12 lg:col-span-4">
+                            <div className="glass-card rounded-xl p-6 h-full border-primary/20">
+                                <h3 className="font-headline-md text-lg text-primary mb-8 flex items-center gap-2">
+                                    <span className="material-symbols-outlined">auto_fix_high</span>
+                                    VaultIQ Agent Pipeline
+                                </h3>
+                                <div className="relative pl-10 space-y-12">
+                                    <div className="absolute left-[11px] top-2 h-[calc(100%-16px)] pipeline-line"></div>
+                                    <PipelineStep step={1} title="Document Ingestion" desc="OCR and metadata extraction active." status={getStepStatus(1)} />
+                                    <PipelineStep step={2} title="Semantic Analysis" desc="Neural mapping of compliance clauses." status={getStepStatus(2)} />
+                                    <PipelineStep step={3} title="Risk Profiling" desc="Scanning for high-priority deviations." status={getStepStatus(3)} />
+                                    <PipelineStep step={4} title="Report Generation" desc="Synthesizing final executive summary." status={getStepStatus(4)} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-span-12">
+                            <div className="glass-card rounded-xl overflow-hidden">
+                                <div className="p-6 border-b border-outline-variant flex justify-between items-center">
+                                    <h3 className="font-headline-md text-lg text-primary flex items-center gap-2">
+                                        <span className="material-symbols-outlined">history</span>
+                                        Upload History
+                                    </h3>
+                                </div>
+                                <div className="overflow-x-auto scrollbar-hide">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead className="bg-surface-container-low text-label-caps text-on-surface-variant border-b border-outline-variant">
+                                            <tr>
+                                                <th className="px-6 py-4 font-bold">Document</th>
+                                                <th className="px-6 py-4 font-bold">Framework</th>
+                                                <th className="px-6 py-4 font-bold">Uploaded</th>
+                                                <th className="px-6 py-4 font-bold">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-outline-variant/30 font-body-sm">
+                                            {filteredHistory.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="4" className="px-6 py-8 text-center text-on-surface-variant opacity-60">
+                                                        No documents uploaded yet.
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                filteredHistory.map((f, i) => {
+                                                    const frameworks = ['GDPR', 'HIPAA', 'SOC2', 'ISO27001'];
+                                                    const framework = frameworks[f.name.length % frameworks.length];
+                                                    const timeString = f.timestamp ? f.timestamp.toLocaleString() : 'Just now';
+
+                                                    return (
+                                                        <tr key={i} className="hover:bg-primary/5 transition-colors group table-row-hover">
+                                                            <td className="px-6 py-4">
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+                                                                        <span className="material-symbols-outlined text-primary text-sm">article</span>
+                                                                    </div>
+                                                                    <span className="font-bold">{f.name}</span>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-4">
+                                                                <span className="px-2 py-0.5 rounded bg-surface-container text-[10px] border border-outline-variant uppercase">
+                                                                    {framework}
+                                                                </span>
+                                                            </td>
+                                                            <td className="px-6 py-4 text-on-surface-variant font-data-md">{timeString}</td>
+                                                            <td className="px-6 py-4">
+                                                                <span className={`status-pill ${f.status === 'complete' ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-red-500/10 text-error border-red-500/20'}`}>
+                                                                    {f.status === 'complete' ? 'Verified' : 'Failed'}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function PipelineStep({ step, title, desc, status }) {
+            let dotClass = 'bg-surface-container border-outline';
+            let dotContent = <div className="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></div>;
+            let titleClass = 'text-on-surface-variant';
+            let labelClass = 'text-on-surface-variant bg-surface-container border-outline-variant';
+            let labelText = 'IDLE';
+            let stepOpacity = 'opacity-50';
+
+            if (status === 'active') {
+                dotClass = 'bg-surface-container border-outline';
+                dotContent = <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_#4cd7f6]"></div>;
+                titleClass = 'text-secondary';
+                labelClass = 'text-secondary bg-secondary/10 border-secondary/20';
+                labelText = 'PROCESSING';
+                stepOpacity = '';
+            } else if (status === 'complete') {
+                dotClass = 'bg-primary border-surface shadow-[0_0_10px_rgba(168,232,255,0.6)]';
+                dotContent = <span className="material-symbols-outlined text-background text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>;
+                titleClass = 'text-primary';
+                labelClass = 'text-primary bg-primary/10 border-primary/20';
+                labelText = 'COMPLETE';
+                stepOpacity = '';
+            }
+
+            return (
+                <div className={`relative group ${stepOpacity} transition-all duration-300`}>
+                    <div className={`absolute -left-[37px] top-0 w-7 h-7 rounded-full border-4 flex items-center justify-center z-10 transition-transform ${dotClass}`}>
+                        {dotContent}
+                    </div>
+                    <div className="space-y-1">
+                        <p className={`font-bold text-sm uppercase tracking-wider ${titleClass}`}>{title}</p>
+                        <p className="text-xs text-on-surface-variant">{desc}</p>
+                        <span className={`inline-block mt-2 text-[10px] px-2 py-0.5 rounded border ${labelClass}`}>
+                            {labelText}
+                        </span>
+                    </div>
+                </div>
+            );
+        }
+
+        // ─── VIEW 3: COMPLIANCE ASSISTANT CHAT ───
+        function Chat({ chatMessages, onSendMessage, isChatting, uploadedFiles }) {
+            const [inputText, setInputText] = useState('');
+            const [searchQuery, setSearchQuery] = useState('');
+            const messagesEndRef = useRef(null);
+
+            useEffect(() => {
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, [chatMessages, isChatting]);
+
+            const handleSend = (e) => {
+                if (e) e.preventDefault();
+                if (!inputText.trim() || isChatting) return;
+                onSendMessage(inputText.trim());
+                setInputText('');
+            };
+
+            const systemContexts = [
+                { name: 'Data Retention Policy V2.pdf', score: 98, tag: 'GDPR', status: 'Modified 2h ago', icon: 'description', color: 'text-secondary' },
+                { name: 'Privacy Notice - UK Branch.docx', score: 42, tag: 'UK-DPA', status: 'In Review', icon: 'article', color: 'text-error' },
+                { name: 'EU Regulation 2016/679.txt', score: 85, tag: 'REGULATORY', status: 'Active', icon: 'gavel', color: 'text-primary' },
+                { name: 'Encryption Standards_SEC.pdf', score: 71, tag: 'ISO 27001', status: 'Active', icon: 'terminal', color: 'text-primary-fixed-dim' }
+            ];
+
+            const customContexts = uploadedFiles
+                .filter(f => f.status === 'complete')
+                .map((f, i) => ({
+                    name: f.name,
+                    score: Math.floor(Math.random() * 40 + 60),
+                    tag: ['GDPR', 'HIPAA', 'SOC2', 'ISO27001'][i % 4],
+                    status: 'Just now',
+                    icon: 'description',
+                    color: 'text-primary'
+                }));
+
+            const allContexts = [...customContexts, ...systemContexts];
+            const filteredContexts = allContexts.filter(doc =>
+                doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                doc.tag.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+
+            const suggestionChips = [
+                { text: 'Summarize gaps', icon: 'summarize' },
+                { text: 'List critical risks', icon: 'report_problem' },
+                { text: 'Draft privacy clause', icon: 'policy' },
+                { text: 'Explain Article 32', icon: 'help' }
+            ];
+
+            function formatText(text) {
+                if (!text) return null;
+                const paragraphs = text.split('\n\n');
+                return paragraphs.map((para, pIdx) => {
+                    if (para.startsWith('- ')) {
+                        const items = para.split('\n- ');
+                        return (
+                            <ul key={pIdx} className="list-disc pl-5 space-y-2 mb-2">
+                                {items.map((item, iIdx) => (
+                                    <li key={iIdx}>{formatInline(item.replace(/^- /, ''))}</li>
+                                ))}
+                            </ul>
+                        );
+                    }
+                    const lines = para.split('\n');
+                    return (
+                        <p key={pIdx} className="mb-2">
+                            {lines.map((line, lIdx) => (
+                                <React.Fragment key={lIdx}>
+                                    {lIdx > 0 && <br />}
+                                    {formatInline(line)}
+                                </React.Fragment>
+                            ))}
+                        </p>
+                    );
+                });
+            }
+
+            function formatInline(line) {
+                const parts = line.split(/\*\*(.*?)\*\*/g);
+                return parts.map((part, index) => {
+                    if (index % 2 === 1) {
+                        return <strong key={index} className="text-primary">{part}</strong>;
+                    }
+                    return part;
+                });
+            }
+
+            return (
+                <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 64px)' }}>
+                    <section className="w-[28%] border-r border-outline-variant flex flex-col bg-surface-container-lowest/50 select-none">
+                        <div className="p-4 border-b border-outline-variant bg-surface-container-low/30">
+                            <div className="relative group">
+                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">
+                                    search
+                                </span>
+                                <input
+                                    className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg pl-10 pr-4 py-2 font-body-sm focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all placeholder:text-on-surface-variant/50"
+                                    placeholder="Search knowledge base..."
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-3">
+                            <div className="font-label-caps text-label-caps text-on-surface-variant mb-2 opacity-50 px-2">
+                                ACTIVE CONTEXT ({filteredContexts.length})
+                            </div>
+                            {filteredContexts.map((doc, idx) => (
+                                <div key={idx} className="glass-card p-4 rounded-xl cursor-pointer">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <span className={`material-symbols-outlined ${doc.color}`}>{doc.icon}</span>
+                                        <span className={`font-data-md text-data-md ${doc.color}`}>{doc.score}%</span>
+                                    </div>
+                                    <h4 className="font-body-md font-bold text-on-surface truncate">{doc.name}</h4>
+                                    <div className="mt-2 flex items-center gap-2">
+                                        <span className="px-2 py-0.5 rounded bg-surface-container-high text-[10px] font-bold text-on-surface-variant uppercase border border-outline-variant">
+                                            {doc.tag}
+                                        </span>
+                                        <span className="font-label-caps text-[10px] text-on-surface-variant opacity-60">
+                                            {doc.status}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section className="w-[72%] flex flex-col bg-surface relative">
+                        <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8 pb-48">
+                            {chatMessages.length === 0 && (
+                                <div className="flex justify-start gap-4">
+                                    <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined text-on-primary text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                                            smart_toy
+                                        </span>
+                                    </div>
+                                    <div className="chat-bubble-ai max-w-[85%] p-6 rounded-2xl rounded-tl-none">
+                                        <h5 className="font-headline-md text-primary text-[18px] mb-3">Welcome to VaultIQ Compliance Assistant</h5>
+                                        <div className="space-y-4 text-on-surface-variant font-body-md leading-relaxed">
+                                            <p>I am your AI-powered compliance auditor. Upload your policy documents or compliance logs, and I can analyze them for potential compliance drift.</p>
+                                            <p>You can ask me questions such as:</p>
+                                            <ul className="list-disc pl-5 space-y-2">
+                                                <li>What are the encryption standards referenced in our policies?</li>
+                                                <li>Are there indefinite retention clauses that violate GDPR?</li>
+                                                <li>What compliance gaps exist in the HIPAA security configurations?</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {chatMessages.map((msg) => {
+                                const isUser = msg.sender === 'user';
+                                if (isUser) {
+                                    return (
+                                        <div key={msg.id} className="flex justify-end">
+                                            <div className="chat-bubble-user max-w-[80%] p-4 rounded-2xl rounded-tr-none">
+                                                <p className="font-body-md text-on-surface">{msg.text}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                }
+
+                                const isError = msg.isError;
+                                const gapData = msg.gapData;
+                                
+                                return (
+                                    <div key={msg.id} className="flex justify-start gap-4">
+                                        <div className={`w-10 h-10 rounded-lg ${isError ? 'bg-error' : 'bg-primary'} flex items-center justify-center shrink-0`}>
+                                            <span className={`material-symbols-outlined ${isError ? 'text-on-error' : 'text-on-primary'} text-[20px]`} style={{ fontVariationSettings: "'FILL' 1" }}>
+                                                {isError ? 'error' : 'smart_toy'}
+                                            </span>
+                                        </div>
+                                        {gapData ? (
+                                            <div className="chat-bubble-ai risk-alert max-w-[85%] p-6 rounded-2xl rounded-tl-none relative overflow-hidden">
+                                                <div className="absolute -top-12 -right-12 w-32 h-32 bg-error/10 blur-3xl rounded-full"></div>
+                                                <div className="flex items-center gap-3 mb-4">
+                                                    <span className="material-symbols-outlined text-error" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
+                                                    <h5 className="font-headline-md text-error text-[18px]">Compliance Gap Detected</h5>
+                                                </div>
+                                                <div className="space-y-4 text-on-surface-variant font-body-md">
+                                                    <p>Analysis of your uploaded document shows a critical discrepancy:</p>
+                                                    <div className="bg-surface-container-lowest/40 p-4 rounded border border-outline-variant/30 font-data-md text-sm border-l-4 border-l-error">
+                                                        {gapData.clause}
+                                                    </div>
+                                                    <p className="text-error-container/80 text-sm">{gapData.explanation}</p>
+                                                </div>
+                                                <div className="mt-6 flex flex-wrap gap-2">
+                                                    <button type="button" className="px-4 py-2 bg-error/20 border border-error/40 rounded-lg flex items-center gap-2 hover:bg-error/30 transition-all text-error font-bold text-xs uppercase tracking-widest">
+                                                        <span className="material-symbols-outlined text-[18px]">auto_fix_high</span>
+                                                        Remediate Gap
+                                                    </button>
+                                                    <button type="button" className="px-4 py-2 bg-surface-bright/20 border border-outline-variant rounded-lg flex items-center gap-2 hover:bg-surface-bright/40 transition-all text-on-surface-variant font-bold text-xs uppercase tracking-widest">
+                                                        <span className="material-symbols-outlined text-[18px]">assignment_turned_in</span>
+                                                        Create Jira Ticket
+                                                    </button>
+                                                    <div className="ml-auto px-3 py-2 bg-orange-400/10 border border-orange-400/30 rounded-lg flex items-center gap-2 text-orange-400 font-bold text-xs uppercase tracking-widest">
+                                                        <span className="material-symbols-outlined text-[16px]">priority_high</span>
+                                                        Risk Level: {gapData.level || 'High'}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="chat-bubble-ai max-w-[85%] p-6 rounded-2xl rounded-tl-none">
+                                                <div className="space-y-4 text-on-surface-variant font-body-md leading-relaxed">
+                                                    {formatText(msg.text)}
+                                                </div>
+                                                {!isError && (
+                                                    <div className="mt-6 flex items-center gap-2 flex-wrap">
+                                                        <div className="px-3 py-1 bg-surface-container border border-outline-variant rounded-full flex items-center gap-2">
+                                                            <span className="material-symbols-outlined text-[16px] text-primary">verified_user</span>
+                                                            <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                                                                AI Generated
+                                                            </span>
+                                                        </div>
+                                                        <div className="px-3 py-1 bg-surface-container border border-outline-variant rounded-full flex items-center gap-2 hover:bg-surface-container-high cursor-pointer transition-colors">
+                                                            <span className="material-symbols-outlined text-[16px] text-primary">link</span>
+                                                            <span className="text-xs font-bold text-primary-fixed uppercase tracking-wider">
+                                                                Source: RAG_VECTOR_DB
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+
+                            {isChatting && (
+                                <div className="flex justify-start gap-4 animate-fade-in-up">
+                                    <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined text-on-primary text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                                            smart_toy
+                                        </span>
+                                    </div>
+                                    <div className="chat-bubble-ai p-4 rounded-2xl rounded-tl-none flex items-center gap-1">
+                                        <span className="typing-dot"></span>
+                                        <span className="typing-dot"></span>
+                                        <span className="typing-dot"></span>
+                                    </div>
+                                </div>
+                            )}
+                            <div ref={messagesEndRef} />
+                        </div>
+
+                        <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-surface via-surface/95 to-transparent pt-12">
+                            <div className="max-w-4xl mx-auto space-y-4">
+                                <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                                    {suggestionChips.map((chip, idx) => (
+                                        <button
+                                            key={idx}
+                                            type="button"
+                                            onClick={() => onSendMessage(chip.text)}
+                                            className="shrink-0 px-4 py-2 bg-surface-container-high/80 backdrop-blur rounded-full border border-outline-variant text-xs font-bold text-on-surface-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2"
+                                        >
+                                            <span className="material-symbols-outlined text-[16px]">{chip.icon}</span>
+                                            {chip.text}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <form onSubmit={handleSend} className="glass-card flex items-center gap-4 p-2 pl-4 rounded-2xl shadow-2xl">
+                                    <button type="button" className="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                                        <span className="material-symbols-outlined">attach_file</span>
+                                    </button>
+                                    <input
+                                        className="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/40 py-4 font-body-md outline-none"
+                                        placeholder="Ask VaultIQ about your compliance posture..."
+                                        type="text"
+                                        value={inputText}
+                                        onChange={(e) => setInputText(e.target.value)}
+                                    />
+                                    <div className="flex items-center gap-2 pr-2">
+                                        <button type="button" className="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                                            <span className="material-symbols-outlined">mic</span>
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={isChatting}
+                                            className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-on-primary hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all active:scale-95 disabled:opacity-50"
+                                        >
+                                            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
+                                                send
+                                            </span>
+                                        </button>
+                                    </div>
+                                </form>
+                                <p className="text-center font-label-caps text-[10px] text-on-surface-variant/40 uppercase tracking-[0.2em]">
+                                    VAULTIQ AI ENGINE v4.2 • DATA ENCRYPTED END-TO-END
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            );
+        }
+
+        // ─── VIEW 4: AUDIT REPORTS ───
+        function Reports({ reportData, onGenerateReport, isGenerating }) {
+            const [logOpen, setLogOpen] = useState(false);
+
+            const hasReport = reportData && reportData.message !== 'No document uploaded';
+            const score = hasReport ? (reportData.risk_score ?? 0) : 68;
+            const gaps = hasReport ? (reportData.gaps ?? []) : [
+                'Unauthorized access attempt to L1 storage block',
+                'SSL Certificate expiry in subdomain api.vault.internal',
+                'Patch required for redundant backup service v4.1'
+            ];
+            const gapsCount = gaps.length;
+            
+            const riskRegister = hasReport
+                ? gaps.map((gap, i) => ({
+                        id: `VIQ-R${1000 + i}`,
+                        desc: gap,
+                        framework: ['GDPR ART 32', 'SOC2 TYPE II', 'HIPAA SEC', 'ISO 27001'][i % 4],
+                        severity: i === 0 ? 'CRITICAL' : i === 1 ? 'HIGH' : 'MEDIUM',
+                        status: i === 0 ? 'ACTIVE' : i === 1 ? 'REVIEWING' : 'QUEUED',
+                        color: i === 0 ? 'bg-error text-error' : i === 1 ? 'bg-orange-500 text-orange-500' : 'bg-yellow-400 text-yellow-400'
+                    }))
+                : [
+                        { id: 'VIQ-2849', desc: 'Unauthorized access attempt to L1 storage block', framework: 'NIST CF 2.0', severity: 'CRITICAL', status: 'ACTIVE', color: 'bg-error text-error' },
+                        { id: 'VIQ-3102', desc: 'SSL Certificate expiry in subdomain api.vault.internal', framework: 'SOC2 TYPE II', severity: 'HIGH', status: 'REVIEWING', color: 'bg-orange-500 text-orange-500' },
+                        { id: 'VIQ-3155', desc: 'Patch required for redundant backup service v4.1', framework: 'GDPR ART 32', severity: 'MEDIUM', status: 'QUEUED', color: 'bg-yellow-400 text-yellow-400' }
+                    ];
+
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+
+            return (
+                <div className="p-8 space-y-6 animate-fade-in-up">
+                    {!hasReport && !isGenerating ? (
+                        <div className="glass-card rounded-xl p-12 flex flex-col items-center justify-center min-h-[300px]">
+                            <span className="material-symbols-outlined text-6xl text-on-surface-variant/30 mb-4">assessment</span>
+                            <h3 className="font-headline-md text-headline-md text-on-surface mb-2">No Document Context</h3>
+                            <p className="text-on-surface-variant text-center max-w-md mb-6">
+                                Generate a fresh Compliance Audit Report using the latest intelligence context in the system.
+                            </p>
+                            <button
+                                onClick={onGenerateReport}
+                                className="flex items-center gap-2 bg-primary-container text-on-primary-container px-8 py-3 rounded-lg font-bold hover:opacity-90 transition-all primary-glow btn-glow"
+                            >
+                                <span className="material-symbols-outlined">refresh</span>
+                                Generate Compliance Report
+                            </button>
+                        </div>
+                    ) : isGenerating ? (
+                        <div className="glass-card rounded-xl p-12 flex flex-col items-center justify-center min-h-[300px]">
+                            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                                <span className="material-symbols-outlined text-3xl text-primary animate-spin">settings</span>
+                            </div>
+                            <h3 className="font-headline-md text-headline-md text-on-surface">Generating Intelligence...</h3>
+                            <p className="text-on-surface-variant text-sm mt-1">Cross-referencing legal frameworks and compiling risk vectors</p>
+                        </div>
+                    ) : (
+                        <>
+                            {gapsCount > 0 && (
+                                <div className="animate-pulse-red rounded-xl p-4 flex items-center justify-between border border-error/50 flex-wrap gap-4">
+                                    <div className="flex items-center gap-4 text-white">
+                                        <span className="material-symbols-outlined text-display-lg" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
+                                        <div>
+                                            <h2 className="font-headline-md text-headline-md">{gapsCount} Compliance Gap(s) Require Attention</h2>
+                                            <p className="font-body-md opacity-90">Anomalous compliance deviations detected in the uploaded policy text.</p>
+                                        </div>
+                                    </div>
+                                    <button type="button" className="bg-white text-error-container px-6 py-2 rounded font-bold font-label-caps hover:scale-105 transition-transform">
+                                        INITIATE REMEDIATION
+                                    </button>
+                                </div>
+                            )}
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="glass-card p-6 rounded-xl relative overflow-hidden group">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="font-label-caps text-label-caps text-on-surface-variant mb-1">OPEN RISKS</p>
+                                            <h3 className="font-display-lg text-display-lg text-error">{gapsCount * 3}</h3>
+                                        </div>
+                                        <span className="material-symbols-outlined text-error/30 text-4xl">priority_high</span>
+                                    </div>
+                                    <div className="mt-4 flex items-center gap-2 text-error">
+                                        <span className="material-symbols-outlined text-[16px]">trending_up</span>
+                                        <span className="text-[12px] font-data-md">+12% from last week</span>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 h-1 bg-error w-1/3"></div>
+                                </div>
+
+                                <div className="glass-card p-6 rounded-xl relative overflow-hidden group">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="font-label-caps text-label-caps text-on-surface-variant mb-1">IN PROGRESS</p>
+                                            <h3 className="font-display-lg text-display-lg text-secondary">{gapsCount}</h3>
+                                        </div>
+                                        <span className="material-symbols-outlined text-secondary/30 text-4xl">published_with_changes</span>
+                                    </div>
+                                    <div className="mt-4 flex items-center gap-2 text-secondary">
+                                        <span className="material-symbols-outlined text-[16px]">schedule</span>
+                                        <span className="text-[12px] font-data-md">Avg. Response: 4.2h</span>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 h-1 bg-secondary w-1/2"></div>
+                                </div>
+
+                                <div className="glass-card p-6 rounded-xl relative overflow-hidden group">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="font-label-caps text-label-caps text-on-surface-variant mb-1">RESOLVED THIS MONTH</p>
+                                            <h3 className="font-display-lg text-display-lg text-primary">34</h3>
+                                        </div>
+                                        <span className="material-symbols-outlined text-primary/30 text-4xl">check_circle</span>
+                                    </div>
+                                    <div className="mt-4 flex items-center gap-2 text-primary">
+                                        <span className="material-symbols-outlined text-[16px]">verified</span>
+                                        <span className="text-[12px] font-data-md">{score}% Compliance Score</span>
+                                    </div>
+                                    <div className="absolute bottom-0 left-0 h-1 bg-primary w-2/3"></div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                                <div className="lg:col-span-8 glass-card p-6 rounded-xl">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h4 className="font-headline-md text-headline-md text-on-surface">Risk Trend — Last 6 Months</h4>
+                                        <div className="flex gap-4">
+                                            <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-error"></span><span className="text-[10px] font-label-caps">Crit</span></div>
+                                            <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-orange-500"></span><span className="text-[10px] font-label-caps">High</span></div>
+                                            <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-yellow-400"></span><span className="text-[10px] font-label-caps">Med</span></div>
+                                        </div>
+                                    </div>
+                                    <div className="h-[300px] w-full relative">
+                                        <div className="absolute inset-0 flex items-end justify-between px-4">
+                                            <div className="h-full w-full border-b border-l border-outline-variant relative">
+                                                <div className="absolute inset-0 grid grid-rows-4">
+                                                    <div className="border-t border-outline-variant/20"></div>
+                                                    <div className="border-t border-outline-variant/20"></div>
+                                                    <div className="border-t border-outline-variant/20"></div>
+                                                    <div className="border-t border-outline-variant/20"></div>
+                                                </div>
+                                                <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
+                                                    <path
+                                                        className="drop-shadow-[0_0_5px_#ffb4ab]"
+                                                        d="M0 220 Q 50 180, 100 190 T 200 130 T 300 160 T 400 80 T 500 100 T 600 30"
+                                                        fill="none"
+                                                        stroke="#ffb4ab"
+                                                        strokeWidth="2"
+                                                    ></path>
+                                                    <path
+                                                        d="M0 240 Q 50 230, 100 220 T 200 200 T 300 210 T 400 190 T 500 180 T 600 160"
+                                                        fill="none"
+                                                        stroke="#f97316"
+                                                        strokeWidth="2"
+                                                    ></path>
+                                                </svg>
+                                                <div className="absolute -bottom-6 w-full flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+                                                    <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="lg:col-span-4 glass-card p-6 rounded-xl flex flex-col justify-between">
+                                    <div>
+                                        <h4 className="font-headline-md text-headline-md text-on-surface mb-2">Security Posture</h4>
+                                        <p className="text-body-sm text-on-surface-variant">Real-time aggregate risk coefficient across all enterprise nodes.</p>
+                                    </div>
+                                    <div className="relative py-8 flex items-center justify-center">
+                                        <div className="risk-gauge-container">
+                                            <div className="risk-gauge"></div>
+                                            <div
+                                                className="risk-gauge-active"
+                                                style={{ transform: `rotate(${-90 + (score / 100) * 180}deg)`, transition: 'transform 1s ease' }}
+                                            ></div>
+                                        </div>
+                                        <div className="absolute bottom-6 text-center">
+                                            <span className="font-display-lg text-display-lg text-primary">{score}</span>
+                                            <p className="font-label-caps text-[10px] text-on-surface-variant">OPTIMAL RANGE</p>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between text-body-sm">
+                                            <span>Data Integrity</span>
+                                            <span className="text-primary font-data-md">{Math.min(score + 10, 100)}%</span>
+                                        </div>
+                                        <div className="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+                                            <div className="h-full bg-primary" style={{ width: `${Math.min(score + 10, 100)}%` }}></div>
+                                        </div>
+                                        <div className="flex justify-between text-body-sm">
+                                            <span>Threat Neutralization</span>
+                                            <span className="text-secondary font-data-md">{Math.max(score - 10, 0)}%</span>
+                                        </div>
+                                        <div className="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+                                            <div className="h-full bg-secondary" style={{ width: `${Math.max(score - 10, 0)}%` }}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="glass-card rounded-xl overflow-hidden">
+                                <div className="p-6 border-b border-outline-variant flex justify-between items-center flex-wrap gap-4">
+                                    <h4 className="font-headline-md text-headline-md text-on-surface">Risk Register</h4>
+                                    <div className="flex gap-2">
+                                        <input
+                                            className="bg-surface-container border border-outline-variant rounded px-3 py-1.5 text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none text-on-surface"
+                                            placeholder="Filter ID..."
+                                            type="text"
+                                        />
+                                        <button type="button" className="flex items-center gap-2 border border-outline-variant px-4 py-1.5 rounded text-label-caps hover:bg-surface-container transition-colors text-xs font-bold font-label-caps">
+                                            <span className="material-symbols-outlined text-[18px]">download</span>
+                                            EXPORT CSV
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead className="bg-surface-container/50 font-label-caps text-on-surface-variant text-[11px] uppercase tracking-wider">
+                                            <tr>
+                                                <th className="px-6 py-4">Risk ID</th>
+                                                <th className="px-6 py-4">Description</th>
+                                                <th className="px-6 py-4">Framework</th>
+                                                <th className="px-6 py-4">Severity</th>
+                                                <th className="px-6 py-4">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-outline-variant">
+                                            {riskRegister.map((item, idx) => (
+                                                <tr key={idx} className="hover:bg-primary/5 transition-colors group table-row-hover">
+                                                    <td className="px-6 py-4 font-data-md text-primary">{item.id}</td>
+                                                    <td className="px-6 py-4 text-body-sm max-w-sm truncate" title={item.desc}>{item.desc}</td>
+                                                    <td className="px-6 py-4">
+                                                        <span className="text-label-caps bg-surface-container-high px-2 py-0.5 rounded text-[10px] border border-outline-variant uppercase">
+                                                            {item.framework}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 flex items-center h-full">
+                                                        <span className={`risk-dot ${item.color.split(' ')[0]}`}></span>
+                                                        <span className={`font-bold text-xs ${item.color.split(' ')[1]}`}>{item.severity}</span>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${
+                                                            item.status === 'ACTIVE' ? 'bg-error/10 text-error' : item.status === 'REVIEWING' ? 'bg-secondary/10 text-secondary' : 'bg-surface-container-highest text-on-surface-variant'
+                                                        } status-pill`}>
+                                                            {item.status}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div className="glass-card rounded-xl overflow-hidden">
+                                <button
+                                    type="button"
+                                    className="w-full flex items-center justify-between p-6 hover:bg-surface-container transition-colors text-left"
+                                    onClick={() => setLogOpen(!logOpen)}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <span className="material-symbols-outlined text-secondary">terminal</span>
+                                        <h4 className="font-headline-md text-headline-md text-on-surface">Agent Communication Log (A2A)</h4>
+                                    </div>
+                                    <span className={`material-symbols-outlined transition-transform duration-300 ${logOpen ? 'rotate-180' : ''}`}>
+                                        expand_more
+                                    </span>
+                                </button>
+                                {logOpen && (
+                                    <div className="bg-[#0D1321] p-6 font-data-md text-data-md space-y-2 border-t border-outline-variant max-h-60 overflow-y-auto custom-scrollbar">
+                                        {hasReport ? (
+                                            <>
+                                                <div className="flex gap-4">
+                                                    <span className="text-secondary-fixed-dim">[{timeStr}]</span>
+                                                    <span className="text-primary">[INGESTION_A1]</span>
+                                                    <span className="text-on-surface-variant">Document parsing complete.</span>
+                                                </div>
+                                                <div className="flex gap-4">
+                                                    <span className="text-secondary-fixed-dim">[{timeStr}]</span>
+                                                    <span className="text-error">[RISK_ENGINE_B7]</span>
+                                                    <span className="text-error">ANALYSIS COMPLETE: Found {gapsCount} compliance gap(s). Risk score: {score}%</span>
+                                                </div>
+                                                <div className="flex gap-4">
+                                                    <span className="text-secondary-fixed-dim">[{timeStr}]</span>
+                                                    <span className="text-secondary">[REPORT_AGENT_C1]</span>
+                                                    <span className="text-on-surface-variant">Synthesized executive report for review.</span>
+                                                </div>
+                                                {gaps.map((g, idx) => (
+                                                    <div key={idx} className="flex gap-4">
+                                                        <span className="text-secondary-fixed-dim">[{timeStr}]</span>
+                                                        <span className="text-error">[A2A_ALERT]</span>
+                                                        <span className="text-error">GAP: {g}</span>
+                                                    </div>
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="flex gap-4">
+                                                    <span className="text-secondary-fixed-dim">[14:22:01]</span>
+                                                    <span className="text-primary">[INGESTION_A1]</span>
+                                                    <span className="text-on-surface-variant">Streaming logs to Risk Analyzer... [DATA_PKT_083]</span>
+                                                </div>
+                                                <div className="flex gap-4">
+                                                    <span className="text-secondary-fixed-dim">[14:22:05]</span>
+                                                    <span className="text-error">[RISK_ENGINE_B7]</span>
+                                                    <span className="text-error">CRITICAL_THREAT_FOUND: Entropy shift in block_auth. Key: "ADMIN_ROOT"</span>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+            );
+        }
+
+        // ─── MAIN APP COORDINATOR ───
+        function App() {
+            const [currentPage, setCurrentPage] = useState('dashboard');
+            const [toasts, setToasts] = useState([]);
+            const [uploadedFiles, setUploadedFiles] = useState([]);
+            const [dashboardData, setDashboardData] = useState(null);
+            const [reportData, setReportData] = useState(null);
+            const [isUploading, setIsUploading] = useState(false);
+            const [isChatting, setIsChatting] = useState(false);
+            const [isGenerating, setIsGenerating] = useState(false);
+
+            const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    setMousePos({ x: e.clientX, y: e.clientY });
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+
+            const [chatMessages, setChatMessages] = useState([
+                {
+                    id: 'demo-1',
+                    sender: 'user',
+                    text: 'What are the data retention requirements under GDPR Article 5?'
+                },
+                {
+                    id: 'demo-2',
+                    sender: 'ai',
+                    text: 'Under GDPR Article 5, personal data must be kept in a form which permits identification of data subjects for **no longer than is necessary** for the purposes for which the personal data are processed.\n\n- Data may be stored for longer periods for archiving purposes in the public interest, scientific/historical research, or statistical purposes.\n- Appropriate technical and organizational measures must be implemented.\n- Organizations must establish clear time limits for periodic review of data storage.'
+                },
+                {
+                    id: 'demo-3',
+                    sender: 'user',
+                    text: 'Are we currently compliant with this requirement?'
+                },
+                {
+                    id: 'demo-4',
+                    sender: 'ai',
+                    gapData: {
+                        clause: 'Section 4.2 states: "All marketing lead data shall be retained indefinitely to ensure customer lifetime value tracking."',
+                        explanation: 'This contradicts GDPR Storage Limitation principles which prohibit indefinite retention of identifiable lead data without active consent renewal or specific legal justification.',
+                        level: 'High'
+                    }
+                }
+            ]);
+
+            useEffect(() => {
+                const handleHashChange = () => {
+                    const hash = window.location.hash.replace('#', '');
+                    const validPages = ['dashboard', 'upload', 'chat', 'reports'];
+                    if (validPages.includes(hash)) {
+                        setCurrentPage(hash);
+                    } else {
+                        setCurrentPage('dashboard');
+                    }
+                };
+                window.addEventListener('hashchange', handleHashChange);
+                handleHashChange();
+                return () => window.removeEventListener('hashchange', handleHashChange);
+            }, []);
+
+            const handleNavigate = (page) => {
+                window.location.hash = page;
+            };
+
+            const fetchDashboard = async () => {
+                try {
+                    const res = await fetch('/dashboard');
+                    if (res.ok) {
+                        const data = await res.json();
+                        setDashboardData(data);
+                    }
+                } catch (err) {
+                    console.warn('Dashboard fetch error:', err.message);
+                }
+            };
+
+            useEffect(() => {
+                fetchDashboard();
+                const interval = setInterval(fetchDashboard, 30000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const addToast = (message, type = 'success') => {
+                const id = Date.now() + Math.random().toString(36).substr(2, 5);
+                setToasts((prev) => [...prev, { id, message, type }]);
+            };
+
+            const removeToast = (id) => {
+                setToasts((prev) => prev.filter((t) => t.id !== id));
+            };
+
+            const handleUploadFile = async (file) => {
+                if (isUploading) return;
+                setIsUploading(true);
+
+                const fileEntry = {
+                    name: file.name,
+                    size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+                    status: 'uploading',
+                    progress: 0,
+                    timestamp: new Date()
+                };
+
+                setUploadedFiles((prev) => [fileEntry, ...prev]);
+
+                const progressInterval = setInterval(() => {
+                    setUploadedFiles((prev) =>
+                        prev.map((f) => {
+                            if (f.name === file.name && f.status === 'uploading' && f.progress < 90) {
+                                return { ...f, progress: f.progress + Math.floor(Math.random() * 15 + 5) };
+                            }
+                            return f;
+                        })
+                    );
+                }, 300);
+
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+
+                    clearInterval(progressInterval);
+                    setUploadedFiles((prev) =>
+                        prev.map((f) =>
+                            f.name === file.name
+                                ? { ...f, status: 'complete', progress: 100 }
+                                : f
+                        )
+                    );
+
+                    addToast(`✓ ${file.name} uploaded and indexed successfully`);
+                    await fetchDashboard();
+
+                } catch (err) {
+                    clearInterval(progressInterval);
+                    setUploadedFiles((prev) =>
+                        prev.map((f) =>
+                            f.name === file.name
+                                ? { ...f, status: 'error', progress: 0 }
+                                : f
+                        )
+                    );
+                    addToast(`✗ Upload failed: ${err.message}`, 'error');
+                } finally {
+                    setIsUploading(false);
+                }
+            };
+
+            const handleSendMessage = async (text) => {
+                if (!text.trim() || isChatting) return;
+
+                const userMsg = {
+                    id: 'user-' + Date.now(),
+                    sender: 'user',
+                    text
+                };
+
+                setChatMessages((prev) => [...prev, userMsg]);
+                setIsChatting(true);
+
+                try {
+                    const response = await fetch(`/chat?q=${encodeURIComponent(text)}`, {
+                        method: 'POST'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    const aiMsg = {
+                        id: 'ai-' + Date.now(),
+                        sender: 'ai',
+                        text: result.answer
+                    };
+
+                    setChatMessages((prev) => [...prev, aiMsg]);
+
+                } catch (err) {
+                    const errMsg = {
+                        id: 'error-' + Date.now(),
+                        sender: 'ai',
+                        isError: true,
+                        text: 'Sorry, I could not process your request. Ensure a PDF is uploaded first and that the backend server is running.'
+                    };
+                    setChatMessages((prev) => [...prev, errMsg]);
+                    addToast(`✗ Chat error: ${err.message}`, 'error');
+                } finally {
+                    setIsChatting(false);
+                }
+            };
+
+            const handleGenerateReport = async () => {
+                setIsGenerating(true);
+                try {
+                    const res = await fetch('/report');
+                    if (!res.ok) {
+                        throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+                    }
+                    const data = await res.json();
+                    if (data.message === 'No document uploaded') {
+                        addToast('Please upload a document before generating reports.', 'warning');
+                        setReportData(null);
+                    } else {
+                        setReportData(data);
+                        addToast('✓ Compliance report generated successfully!');
+                    }
+                } catch (err) {
+                    addToast(`✗ Report generation failed: ${err.message}`, 'error');
+                    setReportData(null);
+                } finally {
+                    setIsGenerating(false);
+                }
+            };
+
+            const pageTitles = {
+                dashboard: 'Compliance Overview',
+                upload: 'Document Upload Portal',
+                chat: 'Compliance Assistant',
+                reports: 'Risk Intelligence Portal'
+            };
+
+            return (
+                <div className="flex min-h-screen">
+                    <div
+                        id="cursor-glow"
+                        style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+                    ></div>
+
+                    <Sidebar currentPage={currentPage} onNavigate={handleNavigate} />
+
+                    <div className="ml-[240px] flex flex-col flex-1 min-h-screen relative z-10">
+                        <Header title={pageTitles[currentPage] || 'VaultIQ'} />
+                        <main className="flex-1">
+                            {currentPage === 'dashboard' && (
+                                <Dashboard data={dashboardData} onNavigate={handleNavigate} />
+                            )}
+                            {currentPage === 'upload' && (
+                                <Upload
+                                    uploadedFiles={uploadedFiles}
+                                    onUploadFile={handleUploadFile}
+                                    isUploading={isUploading}
+                                />
+                            )}
+                            {currentPage === 'chat' && (
+                                <Chat
+                                    chatMessages={chatMessages}
+                                    onSendMessage={handleSendMessage}
+                                    isChatting={isChatting}
+                                    uploadedFiles={uploadedFiles}
+                                />
+                            )}
+                            {currentPage === 'reports' && (
+                                <Reports
+                                    reportData={reportData}
+                                    onGenerateReport={handleGenerateReport}
+                                    isGenerating={isGenerating}
+                                />
+                            )}
+                        </main>
+                    </div>
+
+                    <Toast toasts={toasts} onClose={removeToast} />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

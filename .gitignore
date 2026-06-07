@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Environment Variables and Credentials
+.env
+service-account.json
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# IDE and ADK logs
+.adk/
+.gemini/
+
+# Node
+frontend/node_modules/
+frontend/.eslintcache
